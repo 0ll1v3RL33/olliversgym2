@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f2">
+<title>Olliver's Gym</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>OLLIVER'S <span>GYM</span></h1>
+  <button class="iconbtn" id="settingsBtn" aria-label="Menu and settings"><span class="menu-ic"><i></i><i></i><i></i></span></button>
+</header>
+
+<!-- TRAIN: start workout / active workout / routines -->
+<section class="tab active" id="tab-train"></section>
+
+<!-- LIBRARY -->
+<section class="tab" id="tab-library">
+  <div class="ttl"><span>Exercise</span><b>Library</b></div>
+  <input id="libSearch" placeholder="🔍 Search exercises" autocomplete="off" style="margin:4px 0 10px">
+  <div class="chips" id="libChips"></div>
+  <div class="card" id="libList"></div>
+  <button class="btn ghost" id="addCustomEx">+ Create custom exercise</button>
+</section>
+
+<!-- STATS -->
+<section class="tab" id="tab-stats">
+  <div class="ttl"><span>Your</span><b>Progress</b></div>
+  <div class="grid3" id="streakStats" style="margin-bottom:14px"></div>
+  <h2>Workout calendar</h2>
+  <div class="card">
+    <div class="calnav"><button id="calPrev">‹</button><b id="calTitle"></b><button id="calNext">›</button></div>
+    <div class="cal" id="calGrid"></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Trained</span><span><i style="background:var(--card2)"></i>Rest day</span><span><i style="outline:2px solid var(--accent2)"></i>Today</span></div>
+  </div>
+
+  <h2>Strength progress</h2>
+  <div class="card">
+    <div class="grid2">
+      <div><label>Exercise</label><select id="progEx"></select></div>
+      <div><label>Show</label><select id="progMetric">
+        <option value="e1rm">Est. 1-rep max</option>
+        <option value="max">Heaviest weight</option>
+        <option value="vol">Volume (kg×reps)</option>
+        <option value="reps">Most reps</option>
+      </select></div>
+    </div>
+    <div style="height:10px"></div>
+    <canvas id="progChart"></canvas>
+  </div>
+  <div class="card" id="prList"></div>
+
+  <h2>Weekly volume (kg lifted)</h2>
+  <div class="card"><canvas id="volChart"></canvas></div>
+
+  <h2>Muscle group balance <span><select id="balRange" style="width:auto;padding:4px 8px;font-size:13px">
+    <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></span></h2>
+  <div class="card" id="balance"></div>
+
+  <h2>Workout history</h2>
+  <div class="card" id="historyList"></div>
+</section>
+
+<!-- BODY -->
+<section class="tab" id="tab-body">
+  <div class="ttl"><span>Body</span><b>Progress</b></div>
+  <div class="card" id="goalCard"></div>
+  <div class="circles" id="bodyCircles" style="margin-bottom:8px"></div>
+  <h2>Log measurements</h2>
+  <div class="card">
+    <label>Date</label><input type="date" id="bmDate">
+    <div class="grid2" style="margin-top:10px">
+      <div><label>Body weight (kg)</label><input type="number" id="bm-weight" inputmode="decimal" step="0.1"></div>
+      <div><label>Chest (cm)</label><input type="number" id="bm-chest" inputmode="decimal" step="0.1"></div>
+      <div><label>Arms (cm)</label><input type="number" id="bm-arms" inputmode="decimal" step="0.1"></div>
+      <div><label>Waist (cm)</label><input type="number" id="bm-waist" inputmode="decimal" step="0.1"></div>
+      <div><label>Hips (cm)</label><input type="number" id="bm-hips" inputmode="decimal" step="0.1"></div>
+      <div><label>Thighs (cm)</label><input type="number" id="bm-thighs" inputmode="decimal" step="0.1"></div>
+    </div>
+    <button class="btn primary" id="saveBm">Save measurements</button>
+  </div>
+  <div class="card">
+    <select id="bmMetric" style="margin-bottom:10px">
+      <option value="weight">Body weight (kg)</option><option value="chest">Chest (cm)</option><option value="arms">Arms (cm)</option>
+      <option value="waist">Waist (cm)</option><option value="hips">Hips (cm)</option><option value="thighs">Thighs (cm)</option>
+    </select>
+    <canvas id="bmChart"></canvas>
+  </div>
+  <div class="card" id="bmList"></div>
+
+  <h2>Progress photos <a id="comparePhotos">Compare</a></h2>
+  <div class="card">
+    <div class="grid2">
+      <div><label>Date</label><input type="date" id="phDate"></div>
+      <div><label>Pose</label><select id="phPose"><option>Front</option><option>Side</option><option>Back</option></select></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn primary" id="phCamera">📷 Take photo</button>
+      <button class="btn ghost" id="phGallery">🖼️ From gallery</button>
+    </div>
+    <input type="file" id="phFileCam" accept="image/*" capture="environment" hidden>
+    <input type="file" id="phFileGal" accept="image/*" hidden>
+  </div>
+  <div class="chips" id="phFilter"></div>
+  <div class="photogrid" id="photoGrid"></div>
+</section>
+
+<!-- FOOD -->
+<section class="tab" id="tab-food">
+  <div class="ttl"><span>Food</span><b>Diary</b></div>
+  <div class="daynav"><button id="fdPrev">‹</button><b id="fdTitle"></b><button id="fdNext">›</button></div>
+  <div class="card" id="fdSummary"></div>
+  <div class="btnrow" style="margin-bottom:12px">
+    <button class="btn primary" id="scanBtn">📷 Scan barcode</button>
+    <button class="btn ghost" id="manualFoodBtn">✏️ Add food</button>
+  </div>
+  <div id="fdMeals"></div>
+</section>
+
+<div id="restBar">
+  <div class="t" id="restTime">0:00</div>
+  <div class="bar"><i id="restFill"></i></div>
+  <button id="restMinus">−15</button><button id="restPlus">+15</button><button id="restSkip">Skip</button>
+</div>
+
+<nav>
+  <button data-tab="train" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg>Train</button>
+  <button data-tab="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h11a2 2 0 0 1 2 2V20H7a2 2 0 0 1-2-2z"/><path d="M5 18a2 2 0 0 1 2-2h11M9 8h5"/></svg>Library</button>
+  <button data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M3 20h18"/></svg>Stats</button>
+  <button data-tab="body"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="2.2"/><path d="M6 9h12M12 9v6M12 15l-3.5 6M12 15l3.5 6"/></svg>Body</button>
+  <button data-tab="food"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v7a2 2 0 0 0 2 2v9M5 3v5M9 3v5M17 3c-2.2 1.8-2.2 7.2 0 9v9"/></svg>Food</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script src="exercises.js"></script>
+<script src="anatomy.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
